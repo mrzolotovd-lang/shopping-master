@@ -1,0 +1,9 @@
+app:
+  environment: "development"
+
+database:
+  type: "sqlite"
+  sqlite_path: "./data/shopping.db"
+
+logging:
+  level: "DEBUG"

@@ -1,0 +1,43 @@
+app:
+  name: "Shopping Master"
+  version: "1.0.0"
+  environment: "development"
+
+database:
+  type: "sqlite"
+  sqlite_path: "./data/shopping.db"
+  postgresql_url: null
+
+users:
+  priorities:
+    - telegram_id: null
+      name: "Owner"
+      priority: 1
+    - telegram_id: null
+      name: "Wife"
+      priority: 2
+
+consumption:
+  default_unit: "шт"
+  default_package_size: 1
+  default_reorder_threshold: 10
+
+nlp:
+  language: "ru"
+  phase: 1
+
+notifications:
+  enabled: false
+  telegram_bot_token: null
+  admin_chat_id: null
+
+backup:
+  enabled: false
+  schedule: "0 3 * * 0"
+  storage: "s3"
+  retention_days: 60
+
+logging:
+  level: "INFO"
+  format: "{time:YYYY-MM-DD HH:mm:ss} | {level} | {message}"
+  file: "./logs/shopping.log"

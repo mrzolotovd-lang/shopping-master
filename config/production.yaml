@@ -1,0 +1,19 @@
+app:
+  environment: "production"
+
+database:
+  type: "postgresql"
+  postgresql_url: "${DATABASE_URL}"
+
+notifications:
+  enabled: true
+  telegram_bot_token: "${TELEGRAM_BOT_TOKEN}"
+
+backup:
+  enabled: true
+  schedule: "0 3 * * 0"
+  storage: "s3"
+  retention_days: 60
+
+logging:
+  level: "INFO"

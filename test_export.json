@@ -1,0 +1,270 @@
+{
+  "exported_at": "2026-08-06T13:44:18.776876",
+  "tables": {
+    "categories": [
+      {
+        "id": 1,
+        "name": "Молочные продукты",
+        "description": null,
+        "default_consumption_rule_id": 1,
+        "created_at": "2026-08-06 10:43:16",
+        "updated_at": "2026-08-06 10:43:16"
+      },
+      {
+        "id": 2,
+        "name": "Детское питание",
+        "description": null,
+        "default_consumption_rule_id": 3,
+        "created_at": "2026-08-06 10:43:16",
+        "updated_at": "2026-08-06 10:43:16"
+      },
+      {
+        "id": 3,
+        "name": "Мясо/Птица/Рыба",
+        "description": null,
+        "default_consumption_rule_id": 2,
+        "created_at": "2026-08-06 10:43:16",
+        "updated_at": "2026-08-06 10:43:16"
+      },
+      {
+        "id": 4,
+        "name": "Крупы/Макароны/Хлеб",
+        "description": null,
+        "default_consumption_rule_id": 3,
+        "created_at": "2026-08-06 10:43:16",
+        "updated_at": "2026-08-06 10:43:16"
+      },
+      {
+        "id": 5,
+        "name": "Овощи/Фрукты",
+        "description": null,
+        "default_consumption_rule_id": 1,
+        "created_at": "2026-08-06 10:43:16",
+        "updated_at": "2026-08-06 10:43:16"
+      },
+      {
+        "id": 6,
+        "name": "Бакалея",
+        "description": null,
+        "default_consumption_rule_id": 3,
+        "created_at": "2026-08-06 10:43:16",
+        "updated_at": "2026-08-06 10:43:16"
+      },
+      {
+        "id": 7,
+        "name": "Бытовая химия",
+        "description": null,
+        "default_consumption_rule_id": 4,
+        "created_at": "2026-08-06 10:43:16",
+        "updated_at": "2026-08-06 10:43:16"
+      },
+      {
+        "id": 8,
+        "name": "Гигиена",
+        "description": null,
+        "default_consumption_rule_id": 4,
+        "created_at": "2026-08-06 10:43:16",
+        "updated_at": "2026-08-06 10:43:16"
+      },
+      {
+        "id": 9,
+        "name": "Напитки",
+        "description": null,
+        "default_consumption_rule_id": 3,
+        "created_at": "2026-08-06 10:43:16",
+        "updated_at": "2026-08-06 10:43:16"
+      },
+      {
+        "id": 10,
+        "name": "Снеки/Сладости",
+        "description": null,
+        "default_consumption_rule_id": 3,
+        "created_at": "2026-08-06 10:43:16",
+        "updated_at": "2026-08-06 10:43:16"
+      }
+    ],
+    "items": [
+      {
+        "id": 1,
+        "name": "Молоко",
+        "category_id": 1,
+        "current_stock": "1.00",
+        "package_size": "1.00",
+        "unit": "л",
+        "reorder_threshold": "10.00",
+        "consumption_rule_id": 1,
+        "auto_fill_mode": "ask",
+        "purchase_count": 0,
+        "is_active": true,
+        "created_at": "2026-08-06 10:43:16",
+        "updated_at": "2026-08-06 10:43:16",
+        "created_by": 1
+      },
+      {
+        "id": 2,
+        "name": "Кефир",
+        "category_id": 1,
+        "current_stock": "1.00",
+        "package_size": "0.50",
+        "unit": "л",
+        "reorder_threshold": "10.00",
+        "consumption_rule_id": 1,
+        "auto_fill_mode": "ask",
+        "purchase_count": 0,
+        "is_active": true,
+        "created_at": "2026-08-06 10:43:16",
+        "updated_at": "2026-08-06 10:43:16",
+        "created_by": 1
+      },
+      {
+        "id": 3,
+        "name": "Йогурт",
+        "category_id": 1,
+        "current_stock": "6.00",
+        "package_size": "1.00",
+        "unit": "шт",
+        "reorder_threshold": "10.00",
+        "consumption_rule_id": 1,
+        "auto_fill_mode": "ask",
+        "purchase_count": 0,
+        "is_active": true,
+        "created_at": "2026-08-06 10:43:16",
+        "updated_at": "2026-08-06 10:43:16",
+        "created_by": 1
+      },
+      {
+        "id": 4,
+        "name": "Творог",
+        "category_id": 1,
+        "current_stock": "0.40",
+        "package_size": "0.20",
+        "unit": "кг",
+        "reorder_threshold": "10.00",
+        "consumption_rule_id": 1,
+        "auto_fill_mode": "ask",
+        "purchase_count": 0,
+        "is_active": true,
+        "created_at": "2026-08-06 10:43:16",
+        "updated_at": "2026-08-06 10:43:16",
+        "created_by": 1
+      },
+      {
+        "id": 5,
+        "name": "Пюре детское",
+        "category_id": 2,
+        "current_stock": "10.00",
+        "package_size": "1.00",
+        "unit": "шт",
+        "reorder_threshold": "10.00",
+        "consumption_rule_id": 3,
+        "auto_fill_mode": "ask",
+        "purchase_count": 0,
+        "is_active": true,
+        "created_at": "2026-08-06 10:43:16",
+        "updated_at": "2026-08-06 10:43:16",
+        "created_by": 1
+      },
+      {
+        "id": 6,
+        "name": "Каша детская",
+        "category_id": 2,
+        "current_stock": "0.80",
+        "package_size": "0.40",
+        "unit": "кг",
+        "reorder_threshold": "10.00",
+        "consumption_rule_id": 3,
+        "auto_fill_mode": "ask",
+        "purchase_count": 0,
+        "is_active": true,
+        "created_at": "2026-08-06 10:43:16",
+        "updated_at": "2026-08-06 10:43:16",
+        "created_by": 1
+      },
+      {
+        "id": 7,
+        "name": "Подгузники",
+        "category_id": 8,
+        "current_stock": "2.00",
+        "package_size": "1.00",
+        "unit": "упак",
+        "reorder_threshold": "10.00",
+        "consumption_rule_id": 4,
+        "auto_fill_mode": "ask",
+        "purchase_count": 0,
+        "is_active": true,
+        "created_at": "2026-08-06 10:43:16",
+        "updated_at": "2026-08-06 10:43:16",
+        "created_by": 1
+      },
+      {
+        "id": 8,
+        "name": "Влажные салфетки",
+        "category_id": 8,
+        "current_stock": "3.00",
+        "package_size": "1.00",
+        "unit": "упак",
+        "reorder_threshold": "10.00",
+        "consumption_rule_id": 4,
+        "auto_fill_mode": "ask",
+        "purchase_count": 0,
+        "is_active": true,
+        "created_at": "2026-08-06 10:43:16",
+        "updated_at": "2026-08-06 10:43:16",
+        "created_by": 1
+      },
+      {
+        "id": 9,
+        "name": "Стиральный порошок",
+        "category_id": 7,
+        "current_stock": "3.00",
+        "package_size": "1.50",
+        "unit": "кг",
+        "reorder_threshold": "10.00",
+        "consumption_rule_id": 4,
+        "auto_fill_mode": "ask",
+        "purchase_count": 0,
+        "is_active": true,
+        "created_at": "2026-08-06 10:43:16",
+        "updated_at": "2026-08-06 10:43:16",
+        "created_by": 1
+      },
+      {
+        "id": 10,
+        "name": "Туалетная бумага",
+        "category_id": 7,
+        "current_stock": "4.00",
+        "package_size": "1.00",
+        "unit": "упак",
+        "reorder_threshold": "10.00",
+        "consumption_rule_id": 4,
+        "auto_fill_mode": "ask",
+        "purchase_count": 0,
+        "is_active": true,
+        "created_at": "2026-08-06 10:43:16",
+        "updated_at": "2026-08-06 10:43:16",
+        "created_by": 1
+      }
+    ],
+    "shopping_list": [],
+    "consumption_logs": [],
+    "purchase_logs": [],
+    "users": [
+      {
+        "id": 1,
+        "telegram_id": null,
+        "name": "Owner",
+        "priority": 1,
+        "created_at": "2026-08-06 10:43:16",
+        "updated_at": "2026-08-06 10:43:16"
+      },
+      {
+        "id": 2,
+        "telegram_id": null,
+        "name": "Wife",
+        "priority": 2,
+        "created_at": "2026-08-06 10:43:16",
+        "updated_at": "2026-08-06 10:43:16"
+      }
+    ]
+  }
+}
