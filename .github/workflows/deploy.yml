@@ -23,6 +23,9 @@ jobs:
   migrate:
     needs: test
     runs-on: ubuntu-latest
+    env:
+      DATABASE_TYPE: postgresql
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
@@ -32,6 +35,4 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Run migrations
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: alembic upgrade head
