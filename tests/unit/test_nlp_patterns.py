@@ -132,7 +132,7 @@ class TestStatusPatterns:
         """Test 'сколько осталось молока' pattern."""
         result = NLPPatterns.match_status("сколько осталось молока")
         assert result is not None
-        assert result["item"] == "молока"
+        assert result["item"] == "молоко"
 
     def test_status_with_status_command(self):
         """Test 'статус молоко' pattern."""
