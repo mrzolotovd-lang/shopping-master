@@ -8,25 +8,30 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
+          pip install -r requirements-dev.txt
       - name: Run tests
-        run: pytest tests/ -v
+        run: pytest tests/ -v --tb=short
 
   migrate:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
       - name: Run migrations
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: |
-          pip install -r requirements.txt
-          python scripts/migrate.py
+        run: alembic upgrade head
