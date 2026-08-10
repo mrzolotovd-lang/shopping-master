@@ -108,10 +108,20 @@ class ItemRepository:
         unit: Optional[str] = None,
         user_id: Optional[int] = None,
     ) -> dict:
-        """Process a purchase (add stock)."""
+        """Process a purchase (add stock). Auto-creates item if not found."""
         item = self.get_by_name(session, item_name)
         if not item:
-            return {"success": False, "error": f"Item '{item_name}' not found"}
+            # Auto-create item with defaults
+            item = self.create(
+                session=session,
+                name=item_name,
+                category_id=None,
+                package_size=1.0,
+                unit=unit or "шт",
+                reorder_threshold=10.0,
+                created_by=user_id,
+            )
+            session.flush()
 
         if amount is None:
             amount = float(item.package_size)
