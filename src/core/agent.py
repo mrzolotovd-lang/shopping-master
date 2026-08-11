@@ -10,6 +10,7 @@ from ..database.connection import DatabaseConnection
 from ..database.models import Item, ShoppingListItem
 from ..database.repositories.item_repo import ItemRepository
 from ..database.repositories.shopping_repo import ShoppingListRepository
+from ..database.repositories.rule_repo import ConsumptionRuleRepository
 from .consumption import ConsumptionEngine
 from .threshold import ThresholdChecker
 
@@ -22,6 +23,7 @@ class Agent:
         self.db = db_connection
         self.item_repo = ItemRepository(db_connection)
         self.shopping_repo = ShoppingListRepository(db_connection)
+        self.rule_repo = ConsumptionRuleRepository(db_connection)
         self.consumption_engine = ConsumptionEngine(db_connection)
         self.threshold_checker = ThresholdChecker(db_connection)
 
@@ -133,5 +135,70 @@ class Agent:
                 .order_by(Item.name)
                 .all()
             )
+        finally:
+            session.close()
+
+    def process_consumption_rule(
+        self,
+        item_name: str,
+        daily_consumption: float,
+        unit: str = "г",
+        user_id: Optional[int] = None,
+    ) -> dict:
+        """Process consumption rule creation."""
+        logger.info(f"Creating consumption rule: {item_name}, {daily_consumption} {unit}/day")
+
+        session = self.db.get_session()
+        try:
+            # Find or create item
+            item = self.item_repo.get_by_name(session, item_name)
+            if not item:
+                item = self.item_repo.create(
+                    session=session,
+                    name=item_name,
+                    package_size=daily_consumption,
+                    unit=unit,
+                    created_by=user_id,
+                )
+                session.flush()
+
+            # Create rule
+            rule_name = f"{item_name}_rule"
+            existing_rule = self.rule_repo.get_by_name(session, rule_name)
+            if existing_rule:
+                # Update existing rule
+                self.rule_repo.update(
+                    session,
+                    existing_rule.id,
+                    value=daily_consumption,
+                    unit=unit,
+                )
+                rule = existing_rule
+            else:
+                # Create new rule
+                rule = self.rule_repo.create(
+                    session=session,
+                    name=rule_name,
+                    rule_type="daily",
+                    value=daily_consumption,
+                    unit=unit,
+                )
+                session.flush()
+
+            # Link rule to item
+            self.item_repo.update(session, item.id, consumption_rule_id=rule.id)
+            session.commit()
+
+            return {
+                "success": True,
+                "item_name": item.name,
+                "daily_consumption": daily_consumption,
+                "unit": unit,
+                "rule_id": rule.id,
+            }
+        except Exception as e:
+            session.rollback()
+            logger.error(f"Failed to create consumption rule: {e}")
+            return {"success": False, "error": str(e)}
         finally:
             session.close()

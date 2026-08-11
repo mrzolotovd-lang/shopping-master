@@ -41,6 +41,11 @@ class NLPProcessor:
         if update:
             return self._process_update(update, result)
 
+        # Try rule patterns
+        rule = self.patterns.match_rule(text)
+        if rule:
+            return self._process_rule(rule, result)
+
         result["message"] = "Команда не распознана. Попробуйте: 'купил молоко 2л', 'молока осталось половина', 'список покупок'"
         return result
 
@@ -118,5 +123,35 @@ class NLPProcessor:
         else:
             result["command_type"] = "status_all"
             result["message"] = "Показываю все товары"
+
+        return result
+
+    def _process_rule(self, match: dict, result: dict) -> dict:
+        """Process consumption rule command."""
+        item = match.get("item", "").strip()
+        amount = match.get("amount")
+        unit = match.get("unit")
+        period = match.get("period", "день")
+
+        if not item:
+            result["message"] = "Не указан товар"
+            return result
+
+        if amount:
+            amount = float(amount)
+        if unit:
+            unit = normalize_unit(unit)
+
+        result["success"] = True
+        result["command_type"] = "rule"
+        result["data"] = {
+            "item_name": item,
+            "daily_consumption": amount,
+            "unit": unit,
+            "period": period,
+        }
+        result["message"] = f"Создано правило расхода: {item}"
+        if amount:
+            result["message"] += f" ({amount} {unit or 'шт'}/день)"
 
         return result

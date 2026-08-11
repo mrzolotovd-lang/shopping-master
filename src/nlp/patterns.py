@@ -39,6 +39,15 @@ class NLPPatterns:
         r"(?P<item>[а-яА-ЯёЁ\s]+?)\s+на\s+донышке",
     ]
 
+    RULE_PATTERNS = [
+        # "правило: корм для собаки 50 грамм в день"
+        r"правило[:\s]+(?P<item>[а-яА-ЯёЁ\s]+?)\s+(?P<amount>\d+(?:\.\d+)?)\s*(?P<unit>л|кг|г|мл|шт)?\s+(?:в\s+)?(?P<period>день|день|неделю|месяц)",
+        # "списывай молоко 100 мл ежедневно"
+        r"списывай\s+(?P<item>[а-яА-ЯёЁ\s]+?)\s+(?P<amount>\d+(?:\.\d+)?)\s*(?P<unit>л|кг|г|мл|шт)?\s*(?:ежедневно|в\s+день)?",
+        # "расход: молоко 200 мл в день"
+        r"расход[:\s]+(?P<item>[а-яА-ЯёЁ\s]+?)\s+(?P<amount>\d+(?:\.\d+)?)\s*(?P<unit>л|кг|г|мл|шт)?\s+(?:в\s+)?(?P<period>день|неделю|месяц)",
+    ]
+
     STATUS_PATTERNS = [
         # "что есть дома?"
         r"что\s+есть\s+дома",
@@ -56,6 +65,13 @@ class NLPPatterns:
         r"что\s+у\s+нас\s+есть",
         # "есть ли молоко"
         r"есть\s+ли\s+(?P<item>[а-яА-ЯёЁ\s]+)",
+    ]
+
+    RULE_PATTERNS = [
+        # "правило: корм для собаки 50 грамм в день"
+        r"правило[:\s]+(?P<item>[а-яА-ЯёЁ\s]+?)\s+(?P<amount>\d+(?:\.\d+)?)\s*(?P<unit>л|кг|г|мл|шт)\s+(?:в\s+)?(?P<period>день|день|неделю|неделю|месяц|месяц)",
+        # "списывай молоко 100 мл ежедневно"
+        r"списывай\s+(?P<item>[а-яА-ЯёЁ\s]+?)\s+(?P<amount>\d+(?:\.\d+)?)\s*(?P<unit>л|кг|г|мл|шт)\s+(?P<period>ежедневно|каждый день|в день)",
     ]
 
     @classmethod
@@ -103,4 +119,18 @@ class NLPPatterns:
                     # Normalize item name
                     groups['item'] = RussianNormalizer.normalize_word(groups['item'])
                 return groups
+        return None
+
+    @classmethod
+    def match_rule(cls, text: str) -> Optional[dict]:
+        """Match consumption rule command."""
+        text = text.lower().strip()
+        for pattern in cls.RULE_PATTERNS:
+            match = re.search(pattern, text)
+            if match:
+                groups = match.groupdict()
+                item = groups.get('item', '').strip()
+                if item and len(item) > 1:
+                    groups['item'] = RussianNormalizer.normalize_word(item)
+                    return groups
         return None

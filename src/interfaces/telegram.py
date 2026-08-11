@@ -179,11 +179,14 @@ class TelegramBot:
                 response = self._get_all_status()
             elif command_type == "status_item":
                 response = self._get_item_status(nlp_result["data"]["item_name"])
+            elif command_type == "rule":
+                response = self._handle_rule(nlp_result["data"])
             else:
                 response = "Извините, я не понял команду. Попробуйте:\n"
                 response += "• 'купил молоко 2л'\n"
                 response += "• 'молока осталось половина'\n"
-                response += "• 'список покупок'"
+                response += "• 'список покупок'\n"
+                response += "• 'правило: молоко 100 мл в день'"
             
             await message.answer(response, parse_mode="Markdown")
             
@@ -214,6 +217,27 @@ class TelegramBot:
             return response
         else:
             return f"❌ {result.get('error', 'Ошибка при обработке покупки')}"
+
+    def _handle_rule(self, data: dict) -> str:
+        """Handle consumption rule command."""
+        item_name = data["item_name"]
+        daily_consumption = data.get("daily_consumption")
+        unit = data.get("unit", "г")
+
+        if not daily_consumption:
+            return f"❌ Не указано количество для '{item_name}'"
+
+        result = self.agent.process_consumption_rule(
+            item_name,
+            daily_consumption,
+            unit,
+            None
+        )
+
+        if result["success"]:
+            return f"✅ Правило: {item_name} — {daily_consumption} {unit}/день"
+        else:
+            return f"❌ Ошибка: {result.get('error', 'Неизвестная ошибка')}"
 
     def _handle_update(self, data: dict) -> str:
         """Handle stock update command."""
