@@ -193,7 +193,7 @@ class Agent:
                 "success": True,
                 "item_name": item.name,
                 "daily_consumption": daily_consumption,
-                "unit": unit,
+                "unit": unit or "г",
                 "rule_id": rule.id,
             }
         except Exception as e:
