@@ -49,12 +49,13 @@ class TestChatInterfacePurchase:
         assert "✅" in result or "молоко" in result.lower()
 
     def test_purchase_unknown_item(self, db_connection):
-        """Test purchase of unknown item."""
+        """Test purchase of unknown item (auto-creates item)."""
         chat = ChatInterface(db_connection)
         chat.set_user(1, "Test")
         
         result = chat.process_message("купил неизвестный товар 2 литра")
-        assert "❌" in result or "не найден" in result.lower()
+        # Item is auto-created, so should succeed
+        assert "✅" in result or "неизвестный товар" in result.lower()
 
 
 class TestChatInterfaceUpdate:
