@@ -1,6 +1,6 @@
 """Consumption rule repository for database operations."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from sqlalchemy.orm import Session
@@ -70,7 +70,7 @@ class ConsumptionRuleRepository:
             if hasattr(rule, key):
                 setattr(rule, key, value)
 
-        rule.updated_at = datetime.utcnow()
+        rule.updated_at = datetime.now(timezone.utc)
         return rule
 
     def delete(self, session: Session, rule_id: int) -> bool:

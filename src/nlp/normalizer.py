@@ -121,7 +121,6 @@ class RussianNormalizer:
     # Words that should be normalized to specific forms
     SPECIAL_CASES = {
         'яиц': 'яйца',
-        'яиц': 'яйца',
         'молока': 'молоко',
         'кефира': 'кефир',
         'творога': 'творог',

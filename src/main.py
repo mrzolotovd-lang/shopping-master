@@ -4,13 +4,10 @@ import sys
 from pathlib import Path
 
 from loguru import logger
-from sqlalchemy.orm import joinedload
 
-from .config import config_manager, get_config
+from .config import config_manager
 from .core.agent import Agent
 from .database.connection import DatabaseConnection
-from .database.models import Item
-from .nlp.processor import NLPProcessor
 
 
 def setup_logging(config):
@@ -100,23 +97,23 @@ def cmd_seed(args):
 
 def cmd_export(args):
     """Export database to JSON."""
-    from scripts.export import export_database
+    from scripts.export_data import export_to_json
 
     config = config_manager.load("development")
     db = init_database(config)
     output_path = args.output if hasattr(args, "output") else "data/export.json"
-    export_database(db, output_path)
+    export_to_json(db.database_url, output_path)
     print(f"Database exported to {output_path}")
 
 
 def cmd_import(args):
     """Import database from JSON."""
-    from scripts.import_data import import_database
+    from scripts.import_data import import_from_json
 
     config = config_manager.load("development")
     db = init_database(config)
     input_path = args.input if hasattr(args, "input") else "data/export.json"
-    import_database(db, input_path)
+    import_from_json(input_path, db.database_url)
     print(f"Database imported from {input_path}")
 
 

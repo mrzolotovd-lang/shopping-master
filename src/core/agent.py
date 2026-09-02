@@ -179,7 +179,7 @@ class Agent:
                 rule = self.rule_repo.create(
                     session=session,
                     name=rule_name,
-                    rule_type="daily",
+                    rule_type="absolute_daily",
                     value=daily_consumption,
                     unit=unit,
                 )

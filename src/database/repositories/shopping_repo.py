@@ -1,6 +1,6 @@
 """Shopping list repository for database operations."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from sqlalchemy.orm import Session
@@ -75,8 +75,8 @@ class ShoppingListRepository:
             return False
 
         entry.status = "completed"
-        entry.completed_at = datetime.utcnow()
-        entry.updated_at = datetime.utcnow()
+        entry.completed_at = datetime.now(timezone.utc)
+        entry.updated_at = datetime.now(timezone.utc)
         return True
 
     def mark_cancelled(self, session: Session, entry_id: int) -> bool:
@@ -86,7 +86,7 @@ class ShoppingListRepository:
             return False
 
         entry.status = "cancelled"
-        entry.updated_at = datetime.utcnow()
+        entry.updated_at = datetime.now(timezone.utc)
         return True
 
     def remove(self, session: Session, entry_id: int) -> bool:

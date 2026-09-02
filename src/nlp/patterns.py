@@ -67,13 +67,6 @@ class NLPPatterns:
         r"есть\s+ли\s+(?P<item>[а-яА-ЯёЁ\s]+)",
     ]
 
-    RULE_PATTERNS = [
-        # "правило: корм для собаки 50 грамм в день"
-        r"правило[:\s]+(?P<item>[а-яА-ЯёЁ\s]+?)\s+(?P<amount>\d+(?:\.\d+)?)\s*(?P<unit>л|кг|г|мл|шт)\s+(?:в\s+)?(?P<period>день|день|неделю|неделю|месяц|месяц)",
-        # "списывай молоко 100 мл ежедневно"
-        r"списывай\s+(?P<item>[а-яА-ЯёЁ\s]+?)\s+(?P<amount>\d+(?:\.\d+)?)\s*(?P<unit>л|кг|г|мл|шт)\s+(?P<period>ежедневно|каждый день|в день)",
-    ]
-
     @classmethod
     def match_purchase(cls, text: str) -> Optional[dict]:
         """Match purchase command."""

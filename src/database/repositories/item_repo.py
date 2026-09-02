@@ -1,11 +1,12 @@
 """Item repository for database operations."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from sqlalchemy.orm import Session
 
 from ..models import Item
+from .log_repo import OperationLogRepository
 
 
 class ItemRepository:
@@ -14,6 +15,7 @@ class ItemRepository:
     def __init__(self, db_connection):
         """Initialize repository."""
         self.db = db_connection
+        self.log_repo = OperationLogRepository(db_connection)
 
     def create(
         self,
@@ -90,7 +92,17 @@ class ItemRepository:
 
         old_stock = float(item.current_stock)
         item.current_stock = stock_level
-        item.updated_at = datetime.utcnow()
+        item.updated_at = datetime.now(timezone.utc)
+
+        self.log_repo.create(
+            session,
+            item_id=item.id,
+            user_id=user_id,
+            operation_type="manual_update",
+            old_value=old_stock,
+            new_value=stock_level,
+            comment=f"Manual stock update: {old_stock:.2f} -> {stock_level:.2f} {item.unit}",
+        )
 
         return {
             "success": True,
@@ -131,7 +143,17 @@ class ItemRepository:
 
         item.current_stock = new_stock
         item.purchase_count += 1
-        item.updated_at = datetime.utcnow()
+        item.updated_at = datetime.now(timezone.utc)
+
+        self.log_repo.create(
+            session,
+            item_id=item.id,
+            user_id=user_id,
+            operation_type="purchase",
+            old_value=old_stock,
+            new_value=new_stock,
+            comment=f"Purchase: +{amount:.2f} {item.unit}",
+        )
 
         if item.purchase_count >= 10 and item.auto_fill_mode == "ask":
             return {
@@ -168,7 +190,7 @@ class ItemRepository:
             if hasattr(item, key):
                 setattr(item, key, value)
 
-        item.updated_at = datetime.utcnow()
+        item.updated_at = datetime.now(timezone.utc)
         return item
 
     def delete(self, session: Session, item_id: int) -> bool:
@@ -178,5 +200,5 @@ class ItemRepository:
             return False
 
         item.is_active = False
-        item.updated_at = datetime.utcnow()
+        item.updated_at = datetime.now(timezone.utc)
         return True

@@ -62,7 +62,7 @@ class ConsumptionRule(Base):
         String(20), nullable=False
     )  # percentage_daily, absolute_daily, manual
     value: Mapped[float] = mapped_column(Numeric(10, 4), nullable=False)
-    unit: Mapped[str] = mapped_column(String(20), default="day")
+    unit: Mapped[str] = mapped_column(String(20), default="")
     created_at: Mapped[datetime] = mapped_column(
         DateTime, server_default=func.current_timestamp()
     )

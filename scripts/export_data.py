@@ -29,12 +29,12 @@ def export_to_json(db_url: str, output_path: str):
     }
     
     tables = [
+        "users",
+        "consumption_rules",
         "categories",
         "items",
         "shopping_list",
-        "consumption_logs",
-        "purchase_logs",
-        "users"
+        "operation_log",
     ]
     
     for table_name in tables:

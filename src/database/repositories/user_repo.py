@@ -1,6 +1,6 @@
 """User repository for database operations."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from sqlalchemy.orm import Session
@@ -63,7 +63,7 @@ class UserRepository:
             if hasattr(user, key):
                 setattr(user, key, value)
 
-        user.updated_at = datetime.utcnow()
+        user.updated_at = datetime.now(timezone.utc)
         return user
 
     def delete(self, session: Session, user_id: int) -> bool:

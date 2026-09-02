@@ -36,7 +36,7 @@ def import_from_json(json_path: str, db_url: str):
     print("\n✓ Tables created")
     
     # Import data (order matters for foreign keys)
-    table_order = ["users", "categories", "items", "shopping_list", "consumption_logs", "purchase_logs"]
+    table_order = ["users", "consumption_rules", "categories", "items", "shopping_list", "operation_log"]
     
     for table_name in table_order:
         if table_name not in data["tables"] or not data["tables"][table_name]:

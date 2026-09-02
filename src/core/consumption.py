@@ -1,6 +1,6 @@
 """Consumption engine for automatic stock reduction."""
 
-from datetime import datetime, timedelta
+from datetime import datetime, timezone
 from typing import Optional
 
 from loguru import logger
@@ -70,7 +70,7 @@ class ConsumptionEngine:
         new_stock = max(0, old_stock - consumption)
 
         item.current_stock = new_stock
-        item.updated_at = datetime.utcnow()
+        item.updated_at = datetime.now(timezone.utc)
 
         self.log_repo.create(
             session,

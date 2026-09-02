@@ -1,6 +1,6 @@
 """Category repository for database operations."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from sqlalchemy.orm import Session
@@ -59,7 +59,7 @@ class CategoryRepository:
             if hasattr(category, key):
                 setattr(category, key, value)
 
-        category.updated_at = datetime.utcnow()
+        category.updated_at = datetime.now(timezone.utc)
         return category
 
     def delete(self, session: Session, category_id: int) -> bool:

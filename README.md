@@ -1,146 +1,192 @@
 # Shopping Master
 
-Агент для управления домашними запасами с автоматическим списанием и NLP-интерфейсом.
+A home inventory management agent with automatic consumption tracking and a natural language interface.
 
-## Возможности
+## Features
 
-- ✅ Ежедневное автоматическое списание остатков по правилам
-- ✅ Ручное обновление через естественный язык (русский)
-- ✅ Автоматическое добавление в список покупок при достижении порога
-- ✅ Поддержка нескольких пользователей с приоритетами
-- ✅ Полная история операций (audit log)
-- ✅ Гибкие правила списания (% в день или абсолютное значение)
+- ✅ Daily automatic stock consumption based on configurable rules
+- ✅ Manual stock updates via natural language (Russian)
+- ✅ Automatic addition to shopping list when threshold is reached
+- ✅ Multi-user support with priority levels
+- ✅ Full operation history (audit log)
+- ✅ Flexible consumption rules (% per day or absolute value)
+- ✅ Multiple interfaces: CLI, Telegram bot, MCP-compatible chat
+- ✅ SQLite (development) and PostgreSQL (production) support
 
-## Быстрый старт
+## Quick Start
 
-### 1. Установка зависимостей
+### 1. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Инициализация БД и тестовые данные
+### 2. Initialize database with test data
 
 ```bash
 python -m src.main seed
 ```
 
-### 3. Запуск
+### 3. Run commands
 
 ```bash
-# Показать все товары
+# Show all items
 python -m src.main status
 
-# Показать список покупок
+# Show shopping list
 python -m src.main buy
 
-# Запустить ежедневное списание
+# Run daily consumption
 python -m src.main consume
 
-# Проверить пороги
+# Check thresholds
 python -m src.main check-thresholds
 ```
 
-## Примеры команд (NLP)
+## Natural Language Examples
 
-### Покупка
-```
-купил молоко 2 литра
-купил 5 йогуртов
-приобрёл творог
-```
+### Purchase
 
-### Обновление остатка
 ```
-молока осталось половина
-молоко почти закончилось
-яиц осталось 10 штук
-сахара совсем мало
+bought milk 2 liters
+bought 5 yogurts
+got cottage cheese
 ```
 
-### Запросы
+### Stock Update
+
 ```
-что есть дома?
-список покупок
-сколько осталось молока?
-статус молоко
+half of the milk is left
+milk is almost out
+10 eggs left
+sugar is running low
 ```
 
-## Структура проекта
+### Queries
+
+```
+what do we have at home?
+shopping list
+how much milk is left?
+status milk
+```
+
+## Project Structure
 
 ```
 shopping-master/
 ├── src/
-│   ├── core/           # Бизнес-логика агента
-│   ├── database/       # Модели БД и репозитории
-│   ├── nlp/            # NLP процессор (regex + словарь)
-│   ├── interfaces/     # Интерфейсы (чат, Telegram, CLI)
-│   └── utils/          # Утилиты
-├── scripts/            # Скрипты (seed, export, import)
-├── tests/              # Тесты
-├── config/             # Конфигурация
-└── migrations/         # Alembic миграции
+│   ├── core/           # Business logic (agent, consumption, threshold)
+│   ├── database/       # SQLAlchemy models and repositories
+│   ├── nlp/            # NLP processor (regex + Russian dictionary)
+│   ├── interfaces/     # Interfaces (chat, Telegram, CLI)
+│   └── utils/          # Utilities
+├── scripts/            # Utility scripts (seed, export, import, migrate)
+├── tests/              # Unit and integration tests
+├── config/             # YAML configuration files
+└── migrations/         # Alembic migrations
 ```
 
-## Конфигурация
+## Configuration
 
-Конфигурационные файлы в `config/`:
+Configuration files are located in `config/`:
 
-- `default.yaml` - конфигурация по умолчанию
-- `development.yaml` - локальная разработка (SQLite)
-- `production.yaml` - продакшен (PostgreSQL)
+- `default.yaml` — default configuration
+- `development.yaml` — local development (SQLite)
+- `production.yaml` — production (PostgreSQL)
 
-## База данных
+Environment variables are supported via `${VAR_NAME}` syntax.
+
+## Database
 
 ### Phase 1 (Development)
-SQLite локально в `./data/shopping.db`
+SQLite locally at `./data/shopping.db`
 
 ### Phase 2 (Production)
 PostgreSQL (Yandex Cloud / Neon / Supabase)
 
-Миграция:
+Migration:
+
 ```bash
-# Экспорт
+# Export
 python -m src.main export --output data/backup.json
 
-# Импорт
+# Import
 python -m src.main import --input data/backup.json
 ```
 
-## Тестирование
+## Telegram Bot
+
+```bash
+# Set environment variables
+export TELEGRAM_BOT_TOKEN="your_token_here"
+export TELEGRAM_ADMIN_CHAT_ID="your_chat_id"
+
+# Run bot
+python -m src.bot
+```
+
+Supported commands:
+- `/start` — welcome message
+- `/buy` — show shopping list
+- `/status` — show all items
+- `/status <item>` — show specific item
+- `/consume` — run daily consumption
+- `/thresholds` — check thresholds
+- `/help` — help
+
+## Testing
 
 ```bash
 pytest
 pytest --cov=src --cov-report=html
 ```
 
-## Архитектура
+## Architecture
 
-См. [ARCHITECTURE.md](ARCHITECTURE.md) для полной документации.
+See [ARCHITECTURE.md](ARCHITECTURE.md) for full documentation.
 
-## План развития
+### Key Design Decisions
 
-### Phase 1 (MVP) - Сейчас
-- [x] Структура проекта
-- [x] Схема БД
-- [x] Core логика (списание, пороги)
-- [x] NLP (regex + словарь)
-- [ ] CLI интерфейс
-- [ ] Тесты
+- **Repository Pattern** — all database access goes through dedicated repository classes
+- **Dependency Injection** — repositories and engines receive the database connection
+- **Multi-layer NLP** — regex patterns + Russian word normalizer + unit/stock-level dictionaries
+- **Audit Log** — every stock-changing operation is recorded in `operation_log`
+- **Soft Delete** — items are marked inactive rather than deleted
+
+## Roadmap
+
+### Phase 1 (MVP) — Current
+- [x] Project structure
+- [x] Database schema
+- [x] Core logic (consumption, thresholds)
+- [x] NLP (regex + dictionary)
+- [x] CLI interface
+- [x] Unit and integration tests
 
 ### Phase 2 (Production)
-- [ ] Telegram бот
-- [ ] GitLab CI/CD
-- [ ] Yandex Cloud Functions
-- [ ] PostgreSQL миграция
-- [ ] Бэкапы
+- [x] Telegram bot
+- [x] GitLab CI/CD
+- [x] PostgreSQL migration
+- [x] Backup scripts
+- [ ] Yandex Cloud Functions deployment
 
 ### Phase 3 (Improvements)
 - [ ] spaCy NLP
-- [ ] LLM API интеграция
-- [ ] Веб-интерфейс
-- [ ] Аналитика
+- [ ] LLM API integration
+- [ ] Web interface
+- [ ] Analytics dashboard
 
-## Лицензия
+## Tech Stack
+
+- **Python 3.11+**
+- **SQLAlchemy 2.0** — ORM
+- **Alembic** — database migrations
+- **Pydantic v2** — configuration validation
+- **Loguru** — logging
+- **aiogram 3.x** — Telegram bot framework
+- **pytest** — testing
+
+## License
 
 MIT
